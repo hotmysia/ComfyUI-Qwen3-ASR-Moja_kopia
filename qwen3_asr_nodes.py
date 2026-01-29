@@ -1,10 +1,40 @@
 import torch
 import numpy as np
 import os
+import torch.nn.functional as F
+import folder_paths
 from qwen_asr import Qwen3ASRModel
 
 # Global cache for models to prevent reloading
 _QWEN3_MODEL_CACHE = {}
+
+def get_qwen_model_list():
+    all_files = folder_paths.get_filename_list("diffusion_models")
+    qwen_models = set()
+    for f in all_files:
+        # Look for the specific structure: Qwen3-ASR/ModelFolder/
+        if "Qwen3-ASR" in f:
+            f = f.replace("\\", "/")
+            parts = f.split("/")
+            if len(parts) >= 2:
+                # We want the path up to the second part (e.g. Qwen3-ASR/Qwen3-ASR-1.7B)
+                qwen_models.add("/".join(parts[:2]))
+    
+    res = sorted(list(qwen_models))
+    return res if res else ["None Found (Place in models/diffusion_models/Qwen3-ASR/)"]
+
+def resolve_qwen_path(model_name):
+    # Try standard Comfy resolution first
+    path = folder_paths.get_full_path("diffusion_models", model_name)
+    if path:
+        return os.path.dirname(path) if os.path.isfile(path) else path
+    
+    # Fallback: manual join with configured diffusion_models paths for directory support
+    for base in folder_paths.get_folder_paths("diffusion_models"):
+        full_path = os.path.join(base, model_name)
+        if os.path.exists(full_path):
+            return full_path
+    return model_name
 
 class Qwen3ForcedAlignerConfig:
     """
@@ -15,8 +45,8 @@ class Qwen3ForcedAlignerConfig:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "model_name": (["Qwen/Qwen3-ForcedAligner-0.6B"], {"default": "Qwen/Qwen3-ForcedAligner-0.6B"}),
-                "device": (["cuda", "cpu", "mps"], {"default": "cuda"}),
+                "model_name": (get_qwen_model_list(),),
+                "device": (["cuda", "cpu"], {"default": "cuda"}),
                 "precision": (["bf16", "fp16", "fp32"], {"default": "bf16"}),
             },
         }
@@ -33,8 +63,9 @@ class Qwen3ForcedAlignerConfig:
             "fp32": torch.float32
         }
         
+        load_path = resolve_qwen_path(model_name)
         return ({
-            "model_name": model_name,
+            "model_name": load_path,
             "kwargs": {
                 "device_map": device,
                 "dtype": dtype_map[precision]
@@ -51,7 +82,7 @@ class Qwen3ASRTranscriber:
         return {
             "required": {
                 "audio": ("AUDIO",),
-                "model_name": (["Qwen/Qwen3-ASR-1.7B", "Qwen/Qwen3-ASR-0.6B"], {"default": "Qwen/Qwen3-ASR-1.7B"}),
+                "model_name": (get_qwen_model_list(),),
                 "language": ("STRING", {"default": "auto"}),
                 "device": (["cuda", "cpu"], {"default": "cuda"}),
                 "precision": (["bf16", "fp16", "fp32"], {"default": "bf16"}),
@@ -76,17 +107,18 @@ class Qwen3ASRTranscriber:
             "fp32": torch.float32
         }
         dtype = dtype_map[precision]
-        lang_param = None if language.lower() == "auto" else language
+        lang_param = None if not language or language.lower() == "auto" else language
 
         # Create a unique cache key based on model settings
         aligner_name = forced_aligner["model_name"] if forced_aligner else "none"
         cache_key = f"{model_name}_{device}_{precision}_{aligner_name}"
 
         if cache_key not in _QWEN3_MODEL_CACHE:
-            print(f"[Qwen3-ASR] Loading model: {model_name}...")
+            load_path = resolve_qwen_path(model_name)
+            print(f"[Qwen3-ASR] Loading model from: {load_path}...")
             
             loader_kwargs = {
-                "model_path": model_name,
+                "pretrained_model_name_or_path": load_path,
                 "dtype": dtype,
                 "device_map": device,
                 "max_new_tokens": max_new_tokens,
@@ -114,12 +146,20 @@ class Qwen3ASRTranscriber:
         else:
             waveform = waveform[0]
 
+        # Resample to 16000Hz using torch to avoid buggy librosa calls in Python 3.13
+        if sample_rate != 16000:
+            # F.interpolate expects [batch, channels, length]
+            w = waveform.view(1, 1, -1)
+            w = F.interpolate(w, size=int(w.shape[-1] * 16000 / sample_rate), mode='linear', align_corners=False)
+            waveform = w.view(-1)
+            sample_rate = 16000
+
         # Qwen-ASR expects (numpy_array, sample_rate)
         audio_input = (waveform.cpu().numpy(), sample_rate)
 
         # Run Inference
         results = model.transcribe(
-            audio=audio_input,
+            audio=[audio_input], # Wrap in list to match expected batch format
             language=lang_param,
             return_time_stamps=True if forced_aligner else False
         )
