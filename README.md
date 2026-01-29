@@ -2,6 +2,10 @@
 
 This extension integrates the **Qwen3-ASR** model family into ComfyUI, providing high-quality speech-to-text transcription and precise word-level timestamps using the Qwen3 Forced Aligner.
 
+# Model
+Qwen3-ASR
+https://github.com/QwenLM/Qwen3-ASR
+
 ## Features
 - **High Accuracy**: Supports Qwen3-ASR 0.6B and 1.7B models.
 - **Multilingual**: Supports 52 languages and dialects with automatic language detection.
