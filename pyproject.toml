@@ -2,7 +2,7 @@
 name = "ComfyUI-Qwen3-ASR"
 description = "Qwen3 ASR model custom node for ComfyUI."
 version = "1.0.0"
-license = "LICENSE"
+license = "LICENSE.md"
 dependencies = ["torch", "numpy", "qwen-asr", "transformers", "accelerate"]
 
 [project.urls]
@@ -10,6 +10,6 @@ Repository = "https://github.com/kaushiknishchay/ComfyUI-Qwen3-ASR"
 #  Used by Comfy Registry https://comfyregistry.org
 
 [tool.comfy]
-PublisherId = "kaushiknishchay"
+PublisherId = "kaushik"
 DisplayName = "ComfyUI-Qwen3-ASR"
 Icon = ""
