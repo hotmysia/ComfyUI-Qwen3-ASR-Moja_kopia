@@ -9,6 +9,11 @@ This extension integrates the **Qwen3-ASR** model family into ComfyUI, providing
 - **Flexible Precision**: Support for `bf16`, `fp16`, and `fp32` to balance VRAM and speed.
 - **Automatic Resampling**: Internally handles audio resampling to 16kHz for optimal model performance.
 
+
+## Preview
+
+![Preview](./assets/image.png)
+
 ## Installation
 
 1. Navigate to your ComfyUI `custom_nodes` directory:
