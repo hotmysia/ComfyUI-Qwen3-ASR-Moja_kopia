@@ -7,6 +7,7 @@ The **Qwen3 Forced Aligner Config** node is a helper node used to initialize the
 - **model_name**: The directory name of the Forced Aligner model located in `models/diffusion_models/Qwen3-ASR/`.
 - **device**: The hardware device to run the aligner on. This should generally match the device used by the Transcriber node.
 - **precision**: The floating-point precision for the aligner model.
+- **flash_attention_2**: Enable Flash Attention 2 for the aligner model to improve performance and reduce memory footprint.
 
 ## Outputs
 

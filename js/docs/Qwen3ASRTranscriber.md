@@ -10,6 +10,9 @@ The **Qwen3 ASR Transcriber** is the primary inference node for the Qwen3-ASR mo
 - **device**: The hardware device to run the model on (`cuda` or `cpu`).
 - **precision**: The floating-point precision. `bf16` is recommended for modern NVIDIA GPUs to save VRAM without losing accuracy.
 - **max_new_tokens**: The maximum number of tokens to generate in the output text. Increase this for longer audio files.
+- **flash_attention_2**: Enable Flash Attention 2 for faster inference and lower VRAM usage. Requires a compatible NVIDIA GPU and the `flash-attn` package installed.
+- **chunk_size**: Process audio in chunks of this many seconds (default: 30). Set to 0 to disable. This is critical for transcribing long audio files to prevent the model from exceeding its context window.
+- **overlap**: The number of seconds of overlap between chunks (default: 2). This helps maintain context and prevents words from being cut off at chunk boundaries.
 - **forced_aligner** (Optional): An optional input from the **Qwen3 Forced Aligner Config** node. If connected, the node will calculate and output word-level timestamps.
 
 ## Outputs
@@ -20,6 +23,7 @@ The **Qwen3 ASR Transcriber** is the primary inference node for the Qwen3-ASR mo
 ## Usage Tips
 
 - **Resampling**: This node automatically resamples audio to 16kHz internally using Torch, ensuring compatibility with the model even if your input audio is 44.1kHz or 48kHz.
+- **Long Audio**: For recordings longer than 30 seconds, ensure `chunk_size` is enabled. If you notice repetition or hallucinations at the end of long files, try adjusting the `chunk_size` or `overlap`.
 - **Caching**: The model is cached in memory after the first run. Changing the `model_name`, `device`, or `precision` will trigger a reload.
 
 ## Example

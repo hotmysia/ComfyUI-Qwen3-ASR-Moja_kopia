@@ -1,7 +1,7 @@
 [project]
 name = "ComfyUI-Qwen3-ASR"
 description = "ComfyUI nodes for Qwen3-ASR (0.6B/1.7B) and ForcedAligner. Supports high-accuracy ASR and language identification for 52 languages/dialects, including 22 Chinese dialects and various English accents. Features word-level timestamps, long audio transcription, and VRAM-optimized inference."
-version = "1.0.3"
+version = "1.0.4"
 license = { file = "LICENSE.md" }
 dependencies = ["torch", "numpy", "qwen-asr", "transformers", "accelerate"]
 

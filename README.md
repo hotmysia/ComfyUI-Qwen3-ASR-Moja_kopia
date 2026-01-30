@@ -1,10 +1,9 @@
 # ComfyUI Qwen3 ASR
 
-This extension integrates the **Qwen3-ASR** model family into ComfyUI, providing high-quality speech-to-text transcription and precise word-level timestamps using the Qwen3 Forced Aligner.
+A high-performance ComfyUI integration for the **Qwen3-ASR** model family. This extension provides state-of-the-art speech-to-text transcription, language identification, and precise word-level timestamps using the novel Qwen3 Forced Aligner.
 
-# Model
-Qwen3-ASR
-https://github.com/QwenLM/Qwen3-ASR
+[![Model](https://img.shields.io/badge/Model-Qwen3--ASR-blue)](https://github.com/QwenLM/Qwen3-ASR)
+[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE.md)
 
 ## Features
 - **High Accuracy**: Supports Qwen3-ASR 0.6B and 1.7B models.
@@ -12,13 +11,16 @@ https://github.com/QwenLM/Qwen3-ASR
 - **Word-Level Timestamps**: Optional integration with Qwen3-ForcedAligner-0.6B.
 - **Flexible Precision**: Support for `bf16`, `fp16`, and `fp32` to balance VRAM and speed.
 - **Automatic Resampling**: Internally handles audio resampling to 16kHz for optimal model performance.
-
+- **FlashAttention 2**: Integrated support for FlashAttention 2 to significantly reduce VRAM usage and accelerate inference.
 
 ## Preview
 
 ![Preview](./assets/image.png)
 
 ## Installation
+
+### Manual Installation
+
 
 1. Navigate to your ComfyUI `custom_nodes` directory:
    ```bash
@@ -33,6 +35,16 @@ https://github.com/QwenLM/Qwen3-ASR
    # For portable versions, use the full path to your python.exe
    python.exe -m pip install -r ComfyUI-Qwen3-ASR/requirements.txt
    ```
+4. **(Recommended)** Install FlashAttention 2 for maximum performance:
+   ```bash
+   # For FlashAttention 2 (requires compatible NVIDIA GPU)
+   python.exe -m pip install -U flash-attn --no-build-isolation
+   ```
+
+   OR
+
+### Install via ComfyUI Manager
+- Search `ComfyUI-Qwen3-ASR` by `Kaushik`
 
 ## Model Setup
 
@@ -70,6 +82,9 @@ The main node for generating transcriptions.
 - `device`: `cuda` (recommended) or `cpu`.
 - `precision`: `bf16` (recommended for RTX 30/40 series), `fp16`, or `fp32`.
 - `max_new_tokens`: Maximum length of the generated text.
+- `flash_attention_2`: Enable Flash Attention 2 for faster inference and lower VRAM usage.
+- `chunk_size`: Process audio in chunks of this many seconds (default: 30). Set to 0 to disable.
+- `overlap`: Overlap between chunks in seconds to maintain context (default: 2).
 - `forced_aligner` (Optional): Connect the output of a **Qwen3 Forced Aligner Config** node here to enable timestamps.
 
 **Outputs:**
@@ -83,6 +98,7 @@ A configuration node that prepares the alignment model.
 - `model_name`: Select the `Qwen3-ForcedAligner-0.6B` folder.
 - `device`: Should match the Transcriber node.
 - `precision`: Should match the Transcriber node.
+- `flash_attention_2`: Enable Flash Attention 2 for the aligner model to improve performance and reduce memory footprint.
 
 **Outputs:**
 - `aligner_config`: Connect this to the `forced_aligner` input on the Transcriber node.
